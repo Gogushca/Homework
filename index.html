@@ -4,596 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой учебный портал</title>
-    <style>
-        /* Стили для анимации загрузки */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #6a0dad;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        #loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 8px solid #ffd700;
-            animation: spin 1.5s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        .loading-text {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .loading-subtext {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Основные стили */
-        :root {
-            --primary: #6a0dad;
-            --secondary: #ffd700;
-            --accent: #e6e6fa;
-            --white: #ffffff;
-            --dark: #4b0082;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--white);
-            color: #333;
-            overflow-x: hidden;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: var(--white);
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
-            animation: pulse 2s infinite;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav li {
-            margin-left: 2rem;
-        }
-        
-        nav a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-        }
-        
-        nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .section {
-            margin-bottom: 3rem;
-            padding: 2rem;
-            border-radius: 15px;
-            background-color: var(--white);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-        }
-        
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .section-title {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--secondary);
-            display: inline-block;
-        }
-        
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid var(--secondary);
-            box-shadow: 0 0 20px rgba(106, 13, 173, 0.3);
-            transition: transform 0.5s ease;
-        }
-        
-        .profile-img:hover {
-            transform: scale(1.05) rotate(5deg);
-        }
-        
-        .profile-info h3 {
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .profile-info p {
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: var(--white);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.3);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(106, 13, 173, 0.4);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), #ffed4e);
-            color: #333;
-            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
-        }
-        
-        .btn-secondary:hover {
-            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.4);
-        }
-        
-        .contact-links {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .game-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .game-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            background-color: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--primary);
-        }
-        
-        .game-content {
-            padding: 1.5rem;
-        }
-        
-        .game-content h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .game-content p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        
-        footer {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: var(--white);
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        /* Таблица домашних заданий */
-        .homework-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .homework-table th, .homework-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .homework-table th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
-        }
-        
-        .homework-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .homework-table tr:hover {
-            background-color: var(--accent);
-        }
-        
-        .homework-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .homework-link:hover {
-            color: var(--dark);
-            text-decoration: underline;
-        }
-        
-        .last-updated {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background-color: var(--accent);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--dark);
-            text-align: center;
-        }
-        
-        .update-time {
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        /* Стили для игр */
-        .game-container {
-            background-color: var(--accent);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-top: 1.5rem;
-            display: none;
-        }
-        
-        .game-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .game-title {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .game-instructions {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .game-input {
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 100%;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        
-        .game-result {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.7);
-            display: none;
-        }
-        
-        .game-result.success {
-            background-color: rgba(144, 238, 144, 0.3);
-            border: 1px solid lightgreen;
-            display: block;
-        }
-        
-        .game-result.error {
-            background-color: rgba(255, 182, 193, 0.3);
-            border: 1px solid lightpink;
-            display: block;
-        }
-        
-        .game-stats {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .stat {
-            background-color: var(--white);
-            padding: 0.8rem;
-            border-radius: 8px;
-            flex: 1;
-            text-align: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .addition-game {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .addition-inputs {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .addition-inputs input {
-            width: 100px;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-        
-        .addition-symbol {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .addition-result {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        /* Стили для теста по информатике */
-        .test-container {
-            background-color: var(--accent);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-top: 1.5rem;
-            display: none;
-        }
-        
-        .test-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .test-question {
-            width: 100%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(9, 3, 99, 0.3);
-            border: 1px solid black;
-        }
-        
-        .test-question td {
-            padding: 10px;
-            vertical-align: top;
-        }
-        
-        .test-question .task {
-            font-weight: bold;
-            padding: 15px;
-        }
-        
-        .test-question .variant {
-            padding: 8px;
-            border-left: 1px solid #eee;
-        }
-        
-        .test-answer {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-        
-        .test-button {
-            width: 200px;
-            margin: 20px auto;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(9, 3, 99, 0.3);
-            height: 60px;
-            font-size: 18px;
-            cursor: pointer;
-            display: block;
-        }
-        
-        .test-result {
-            color: var(--primary);
-            font-size: 18px;
-            margin: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .test-author {
-            color: var(--dark);
-            text-align: center;
-            margin-top: 20px;
-            font-style: italic;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.3s; }
-        .section:nth-child(3) { animation-delay: 0.5s; }
-        .section:nth-child(4) { animation-delay: 0.7s; }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav li {
-                margin: 0.5rem;
-            }
-            
-            .profile {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .contact-links {
-                justify-content: center;
-            }
-            
-            .homework-table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .addition-inputs {
-                flex-direction: column;
-            }
-            
-            .test-question {
-                width: 100%;
-            }
-        }
-    </style>
+   <link href = "style.css" rel = "stylesheet">
 </head>
 <body>
     <!-- Анимация загрузки -->
@@ -741,6 +152,16 @@
                     <div class="game-content">
                         <h3>Тест по информатике</h3>
                         <p>Проверьте свои знания по информатике</p>
+                        <button class="btn play-game" style="margin-top: 0.5rem;">Играть</button>
+                    </div>
+                </div>
+                
+                <!-- Новая карточка для тестера скорости печати -->
+                <div class="game-card" data-game="typing">
+                    <div class="game-img">⌨️</div>
+                    <div class="game-content">
+                        <h3>Тестер скорости печати</h3>
+                        <p>Проверьте свою скорость и точность набора текста</p>
                         <button class="btn play-game" style="margin-top: 0.5rem;">Играть</button>
                     </div>
                 </div>
@@ -1036,10 +457,84 @@
                 
                 <div class="test-author">Разработчики: Лунева Алекса</div>
             </div>
+            
+            <!-- Тестер скорости печати -->
+            <div id="typingGame" class="typing-test-container">
+                <h3 class="game-title">Тестер скорости печати</h3>
+                <p class="game-instructions">Проверьте свою скорость и точность набора текста. Начните печатать, когда будете готовы!</p>
+                
+                <div class="typing-stats">
+                    <div class="typing-stat-box">
+                        <div class="typing-stat-value" id="typing-wpm">0</div>
+                        <div class="typing-stat-label">слов/мин</div>
+                    </div>
+                    <div class="typing-stat-box">
+                        <div class="typing-stat-value" id="typing-accuracy">100%</div>
+                        <div class="typing-stat-label">точность</div>
+                    </div>
+                    <div class="typing-stat-box">
+                        <div class="typing-stat-value" id="typing-time">60</div>
+                        <div class="typing-stat-label">секунд</div>
+                    </div>
+                    <div class="typing-stat-box">
+                        <div class="typing-stat-value" id="typing-errors">0</div>
+                        <div class="typing-stat-label">ошибки</div>
+                    </div>
+                </div>
+                
+                <div class="typing-difficulty">
+                    <label>
+                        <input type="radio" name="typing-difficulty" value="easy" checked> Легкий
+                    </label>
+                    <label>
+                        <input type="radio" name="typing-difficulty" value="medium"> Средний
+                    </label>
+                    <label>
+                        <input type="radio" name="typing-difficulty" value="hard"> Сложный
+                    </label>
+                </div>
+                
+                <div class="typing-progress-bar">
+                    <div class="typing-progress" id="typing-progress"></div>
+                </div>
+                
+                <div class="text-display">
+                    <div id="typing-text-to-type" class="text-to-type"></div>
+                </div>
+                
+                <textarea id="typing-input-area" class="typing-input-area" placeholder="Начните печатать здесь..." disabled></textarea>
+                
+                <div class="typing-buttons">
+                    <button id="typing-start-btn" class="typing-btn typing-start-btn">Начать тест</button>
+                    <button id="typing-reset-btn" class="typing-btn typing-reset-btn">Сбросить</button>
+                </div>
+                
+                <div id="typing-result" class="typing-result">
+                    <h2>Результаты теста</h2>
+                    <div class="typing-result-stats">
+                        <div class="typing-result-stat">
+                            <div class="typing-result-value" id="typing-result-wpm">0</div>
+                            <div class="typing-stat-label">слов/мин</div>
+                        </div>
+                        <div class="typing-result-stat">
+                            <div class="typing-result-value" id="typing-result-accuracy">0%</div>
+                            <div class="typing-stat-label">точность</div>
+                        </div>
+                        <div class="typing-result-stat">
+                            <div class="typing-result-value" id="typing-result-time">0</div>
+                            <div class="typing-stat-label">секунд</div>
+                        </div>
+                        <div class="typing-result-stat">
+                            <div class="typing-result-value" id="typing-result-errors">0</div>
+                            <div class="typing-stat-label">ошибки</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
     
-    
+
 
     <script>
         // Показываем анимацию загрузки
@@ -1093,6 +588,7 @@
             const gameButtons = document.querySelectorAll('.play-game');
             const gameContainers = document.querySelectorAll('.game-container');
             const testContainer = document.getElementById('testGame');
+            const typingContainer = document.getElementById('typingGame');
             
             gameButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -1104,8 +600,9 @@
                         container.classList.remove('active');
                     });
                     
-                    // Скрываем тест
+                    // Скрываем тест и тестер печати
                     testContainer.classList.remove('active');
+                    typingContainer.classList.remove('active');
                     
                     // Показываем выбранную игру
                     if (gameType === 'counting') {
@@ -1120,6 +617,9 @@
                     } else if (gameType === 'test') {
                         testContainer.classList.add('active');
                         resetTest();
+                    } else if (gameType === 'typing') {
+                        typingContainer.classList.add('active');
+                        initTypingTest();
                     }
                 });
             });
@@ -1378,6 +878,232 @@
             
             // Добавляем обработчик для кнопки проверки теста
             document.getElementById('checkTestButton').addEventListener('click', checkTest);
+            
+            // Код для тестера скорости печати
+            function initTypingTest() {
+                // Элементы DOM
+                const textToTypeElement = document.getElementById('typing-text-to-type');
+                const inputArea = document.getElementById('typing-input-area');
+                const startBtn = document.getElementById('typing-start-btn');
+                const resetBtn = document.getElementById('typing-reset-btn');
+                const wpmElement = document.getElementById('typing-wpm');
+                const accuracyElement = document.getElementById('typing-accuracy');
+                const timeElement = document.getElementById('typing-time');
+                const errorsElement = document.getElementById('typing-errors');
+                const resultElement = document.getElementById('typing-result');
+                const resultWpmElement = document.getElementById('typing-result-wpm');
+                const resultAccuracyElement = document.getElementById('typing-result-accuracy');
+                const resultTimeElement = document.getElementById('typing-result-time');
+                const resultErrorsElement = document.getElementById('typing-result-errors');
+                const difficultyRadios = document.querySelectorAll('input[name="typing-difficulty"]');
+                const progressElement = document.getElementById('typing-progress');
+                
+                // Переменные состояния
+                let testStarted = false;
+                let startTime;
+                let timerInterval;
+                let timeLeft = 60;
+                let originalText = '';
+                let currentText = '';
+                let correctChars = 0;
+                let totalChars = 0;
+                let errors = 0;
+                
+                // Тексты для разных уровней сложности
+                const texts = {
+                    easy: [
+                        "Кот сидит на стуле и смотрит в окно. Птицы летают высоко в небе. Солнце светит ярко. Дети играют во дворе. Мама готовит вкусный обед.",
+                        "Сегодня хорошая погода. Мы пойдем гулять в парк. Там есть красивые цветы и высокие деревья. Мы возьмем с собой мяч и будем играть в футбол.",
+                        "У меня есть друг. Его зовут Алексей. Он живет в соседнем доме. Мы вместе ходим в школу. После уроков мы делаем домашнее задание."
+                    ],
+                    medium: [
+                        "Программирование - это искусство создания инструкций для компьютера. Эти инструкции выполняются процессором и позволяют решать различные задачи. Современные языки программирования предоставляют разработчикам мощные инструменты.",
+                        "Экономика - это социальная наука, изучающая производство, распределение и потребление товаров и услуг. Она анализирует, как индивиды, предприятия и правительства делают выбор в условиях ограниченных ресурсов.",
+                        "Литература играет важную роль в культурном развитии общества. Через художественные произведения авторы передают идеи, эмоции и жизненный опыт. Чтение расширяет кругозор и развивает критическое мышление."
+                    ],
+                    hard: [
+                        "Квантовая механика - фундаментальная теория в физике, описывающая поведение материи и энергии на уровне атомов и субатомных частиц. Она вводит концепции суперпозиции и запутанности, которые противоречат классической интуиции.",
+                        "Нейронные сети представляют собой вычислительные системы, вдохновленные биологическими нейронными сетями животного мозга. Они состоят из взаимосвязанных узлов, которые обрабатывают информацию, используя алгоритмы машинного обучения.",
+                        "Философия сознания исследует природу сознания, ментальных событий, функций и свойств. Центральные вопросы включают взаимосвязь между разумом и телом, природу субъективного опыта и возможность искусственного интеллекта."
+                    ]
+                };
+                
+                // Инициализация
+                resetTypingTest();
+                
+                // Обработчики событий
+                startBtn.addEventListener('click', startTypingTest);
+                resetBtn.addEventListener('click', resetTypingTest);
+                inputArea.addEventListener('input', handleTypingInput);
+                
+                // Функции
+                function getSelectedDifficulty() {
+                    for (const radio of difficultyRadios) {
+                        if (radio.checked) {
+                            return radio.value;
+                        }
+                    }
+                    return 'easy';
+                }
+                
+                function getRandomText(difficulty) {
+                    const textArray = texts[difficulty];
+                    return textArray[Math.floor(Math.random() * textArray.length)];
+                }
+                
+                function startTypingTest() {
+                    if (testStarted) return;
+                    
+                    testStarted = true;
+                    inputArea.disabled = false;
+                    inputArea.focus();
+                    startBtn.disabled = true;
+                    
+                    // Установка текста в зависимости от сложности
+                    const difficulty = getSelectedDifficulty();
+                    originalText = getRandomText(difficulty);
+                    currentText = originalText;
+                    renderTypingText();
+                    
+                    // Запуск таймера
+                    startTime = new Date();
+                    timeLeft = 60;
+                    updateTypingTimer();
+                    
+                    timerInterval = setInterval(function() {
+                        timeLeft--;
+                        updateTypingTimer();
+                        
+                        if (timeLeft <= 0) {
+                            endTypingTest();
+                        }
+                    }, 1000);
+                }
+                
+                function resetTypingTest() {
+                    testStarted = false;
+                    clearInterval(timerInterval);
+                    
+                    inputArea.disabled = true;
+                    inputArea.value = '';
+                    startBtn.disabled = false;
+                    
+                    timeLeft = 60;
+                    correctChars = 0;
+                    totalChars = 0;
+                    errors = 0;
+                    
+                    updateTypingStats();
+                    resultElement.style.display = 'none';
+                    progressElement.style.width = '0%';
+                    
+                    // Установка текста в зависимости от сложности
+                    const difficulty = getSelectedDifficulty();
+                    originalText = getRandomText(difficulty);
+                    currentText = originalText;
+                    renderTypingText();
+                }
+                
+                function handleTypingInput() {
+                    if (!testStarted) return;
+                    
+                    const typedText = inputArea.value;
+                    totalChars = typedText.length;
+                    
+                    // Подсчет правильных символов и ошибок
+                    correctChars = 0;
+                    errors = 0;
+                    
+                    for (let i = 0; i < typedText.length; i++) {
+                        if (i < originalText.length && typedText[i] === originalText[i]) {
+                            correctChars++;
+                        } else {
+                            errors++;
+                        }
+                    }
+                    
+                    // Обновление отображаемого текста
+                    currentText = originalText;
+                    renderTypingText();
+                    
+                    // Обновление статистики
+                    updateTypingStats();
+                    
+                    // Обновление прогресса
+                    const progress = (typedText.length / originalText.length) * 100;
+                    progressElement.style.width = Math.min(progress, 100) + '%';
+                    
+                    // Автоматическое завершение теста при полном вводе текста
+                    if (typedText.length >= originalText.length) {
+                        endTypingTest();
+                    }
+                }
+                
+                function renderTypingText() {
+                    const typedText = inputArea.value;
+                    let html = '';
+                    
+                    for (let i = 0; i < currentText.length; i++) {
+                        if (i < typedText.length) {
+                            if (typedText[i] === currentText[i]) {
+                                html += `<span class="correct">${currentText[i]}</span>`;
+                            } else {
+                                html += `<span class="incorrect">${currentText[i]}</span>`;
+                            }
+                        } else if (i === typedText.length) {
+                            html += `<span class="current-char">${currentText[i]}</span>`;
+                        } else {
+                            html += currentText[i];
+                        }
+                    }
+                    
+                    textToTypeElement.innerHTML = html;
+                }
+                
+                function updateTypingStats() {
+                    // Расчет WPM (слов в минуту)
+                    const elapsedTime = (60 - timeLeft) / 60; // в минутах
+                    const wpm = elapsedTime > 0 ? Math.round((correctChars / 5) / elapsedTime) : 0;
+                    wpmElement.textContent = wpm;
+                    
+                    // Расчет точности - исправленная формула
+                    // Теперь точность рассчитывается как процент правильно введенных символов от общего количества введенных символов
+                    const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100;
+                    accuracyElement.textContent = `${accuracy}%`;
+                    
+                    // Обновление таймера
+                    timeElement.textContent = timeLeft;
+                    
+                    // Обновление счетчика ошибок
+                    errorsElement.textContent = errors;
+                }
+                
+                function updateTypingTimer() {
+                    timeElement.textContent = timeLeft;
+                }
+                
+                function endTypingTest() {
+                    clearInterval(timerInterval);
+                    testStarted = false;
+                    inputArea.disabled = true;
+                    
+                    // Расчет финальной статистики
+                    const elapsedTime = 60 - timeLeft;
+                    const wpm = Math.round((correctChars / 5) / (elapsedTime / 60));
+                    const accuracy = totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 0;
+                    
+                    // Отображение результатов
+                    resultWpmElement.textContent = wpm;
+                    resultAccuracyElement.textContent = `${accuracy}%`;
+                    resultTimeElement.textContent = elapsedTime;
+                    resultErrorsElement.textContent = errors;
+                    
+                    resultElement.style.display = 'block';
+                    
+                    // Прокрутка к результатам
+                    resultElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         });
     </script>
 </body>
